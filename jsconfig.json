@@ -4,5 +4,6 @@
       "@/*": ["./src/*"]
     }
   },
+  "include": ["src/**/*", "src/views/AboutView.vue"],
   "exclude": ["node_modules", "dist"]
 }
