@@ -20,7 +20,7 @@
     </nav>
   </header>
 
-  <div class="flex items-center justify-center h-screen">
+  <div class="flex items-center justify-center mt-14">
     <BaseModal :modalActive="modalActive" @close-modal="toggleModal">
       <div class="text-black">
         <h1 class="text-2xl mb-1">Hakkında:</h1>
@@ -52,11 +52,11 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router'
-import BaseModal from './baseModal.vue'
-import { ref } from 'vue'
-const modalActive = ref(null)
+import { RouterLink } from 'vue-router';
+import BaseModal from './baseModal.vue';
+import { ref } from 'vue';
+const modalActive = ref(null);
 const toggleModal = () => {
-  modalActive.value = !modalActive.value
-}
+  modalActive.value = !modalActive.value;
+};
 </script>

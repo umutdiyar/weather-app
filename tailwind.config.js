@@ -8,8 +8,9 @@ export default {
         'weather-primary-hover': '#282C35',
         'weather-secondary': '#CAF205',
         'weather-background-off-white': '#ECEFF3',
+        'weather-app-to-secondary': '#755CFF',
       },
     },
   },
   plugins: [],
-}
+};
