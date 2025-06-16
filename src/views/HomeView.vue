@@ -7,6 +7,7 @@
           type="text"
           v-model="search"
           @input="getCitySuggestions"
+          @keyup.enter="onEnterPressed"
           autocomplete="off"
           class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-weather-secondary focus:outline-none focus:ring-0 focus:border-weather-secondary peer"
           placeholder=" "
@@ -82,9 +83,22 @@ const selectCity = async (city) => {
   }
 };
 
+// Enter tuşu ile arama
+const onEnterPressed = async () => {
+  if (!search.value) return;
+  citySearchStore.clearSuggestions();
+  await weatherStore.fetchWeatherByCity(search.value, '');
+  if (!weatherStore.errorMessage && weatherStore.weather) {
+    const city = weatherStore.weather;
+    router.push(`/city/${city.city}/${city.country}`);
+  }
+};
+
 onMounted(() => {
   weatherStore.weather = null;
   weatherStore.forecast = [];
   weatherStore.errorMessage = '';
+  citySearchStore.search = '';
+  citySearchStore.clearSuggestions();
 });
 </script>

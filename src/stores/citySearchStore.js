@@ -39,5 +39,9 @@ export const useCitySearchStore = defineStore('citySearch', {
       this.suggestions = [];
       this.errorMessage = '';
     },
+    async searchCityByName(cityName) {
+      this.search = cityName;
+      await this.getCitySuggestions();
+    },
   },
 });

@@ -8,7 +8,7 @@
       <button
         @click="goBack"
         type="button"
-        class="px-3 py-2 text-sm font-medium text-center inline-flex items-center border-indigo-700 border text-indigo-700 hover:bg-indigo-700 hover:text-white rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300"
+        class="px-3 py-2 mb-2 text-sm font-medium text-center inline-flex items-center border-weather-secondary border text-weather-secondary hover:bg-weather-primary-hover hover:border-weather-primary-hover hover:text-white rounded-lg"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
