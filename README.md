@@ -1,29 +1,37 @@
-# weather-app
+# 🌤️ Weather App
 
-This template should help get you started developing with Vue 3 in Vite.
+A simple and modern weather application where users can check the current weather of any city.
 
-## Recommended IDE Setup
+## 🚀 Live Demo
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+You can try the app here: [https://your-demo-url.com](https://your-demo-url.com)
 
-## Customize configuration
+## 📸 Screenshots
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+| Home Page | Weather Details |
+|------------|----------------|
+| ![Home Page](https://github.com/umutdiyar/weather-app/blob/main/public/homePageScreenshot.png?raw=true) | ![Weather](https://github.com/umutdiyar/weather-app/blob/main/public/cityDetailScreenshot.png?raw=true) |
 
-## Project Setup
+## ⚙️ Features
 
-```sh
+- 🌡️ Real-time temperature and weather conditions
+- 🔍 Search by city name
+- 📱 Fully responsive design
+- 🎨 Clean and easy-to-use interface
+
+## 🛠️ Technologies
+
+- **Vue**
+- **Axios** for API requests
+- **OpenWeatherMap API**
+- **CSS / Tailwind **
+
+## 💻 Installation
+
+To run the app locally:
+
+```bash
+git clone https://github.com/umutdiyar/weather-app.git
+cd weather-app
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+npm start
