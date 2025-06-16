@@ -1,35 +1,57 @@
 <template>
   <div class="container mx-auto max-w-screen-lg text-white">
-    <div v-if="errorMessage" class="text-red-500 text-center mt-6">{{ errorMessage }}</div>
+    <div v-if="store.errorMessage" class="text-red-500 text-center mt-6">
+      {{ store.errorMessage }}
+    </div>
 
-    <div v-else-if="weather" class="mt-6 p-6 rounded-xl text-center">
-      <h2 class="text-xl font-semibold mb-1">{{ weather.city }}, {{ weather.country }}</h2>
-      <p class="text-sm text-gray-400 mb-4">{{ dateTime }}</p>
+    <div v-else-if="store.weather" class="mt-6 p-6 rounded-xl text-center">
+      <button
+        @click="goBack"
+        type="button"
+        class="px-3 py-2 text-sm font-medium text-center inline-flex items-center border-indigo-700 border text-indigo-700 hover:bg-indigo-700 hover:text-white rounded-lg focus:ring-4 focus:outline-none focus:ring-blue-300"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-3 h-3 me-2 transition-colors duration-200 ease-in-out"
+          aria-hidden="true"
+          fill="currentColor"
+          viewBox="0 0 512 512"
+        >
+          <path
+            d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 288 480 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-370.7 0 73.4-73.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-128 128z"
+          />
+        </svg>
+        Geri Dön
+      </button>
+      <h2 class="text-xl font-semibold mb-1">
+        {{ store.weather.city }}, {{ store.weather.country }}
+      </h2>
+      <p class="text-sm text-gray-400 mb-4">{{ store.dateTime }}</p>
 
-      <p class="text-6xl font-bold mb-4">{{ Math.round(weather.temp) }}°C</p>
+      <p class="text-6xl font-bold mb-4">{{ Math.round(store.weather.temp) }}°C</p>
 
       <!-- Hava durumu açıklaması -->
-      <p class="capitalize text-gray-300 text-xl mb-3">{{ weather.description }}</p>
+      <p class="capitalize text-gray-300 text-xl mb-3">{{ store.weather.description }}</p>
 
       <!-- Hava durumu ikonu -->
       <img
-        v-if="weather.icon"
-        :src="`https://openweathermap.org/img/wn/${weather.icon.slice(0, 2)}d@2x.png`"
-        :alt="weather.description"
+        v-if="store.weather && store.weather.icon"
+        :src="`https://openweathermap.org/img/wn/${store.weather.icon.slice(0, 2)}d@2x.png`"
+        :alt="store.weather.description"
         class="mx-auto"
       />
     </div>
 
     <div
-      v-if="forecast.length"
+      v-if="store.forecast.length"
       class="mt-6 overflow-x-auto scrollbar-hide flex items-center justify-center py-2"
     >
       <div class="flex space-x-4 px-2">
         <div
-          v-for="(day, index) in forecast"
+          v-for="(day, index) in store.forecast"
           :key="index"
           style="background-color: #042940; box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.1)"
-          class="min-w-[160px] cursor-pointer bg-opacity-20 backdrop-blur-md rounded-lg p-6 flex flex-col items-center flex-shrink-0"
+          class="min-w-[160px] hover:bg-weather-primary-hover cursor-pointer bg-opacity-20 backdrop-blur-md rounded-lg p-6 flex flex-col items-center flex-shrink-0"
         >
           <p class="font-semibold mb-2 text-white">
             {{
@@ -59,121 +81,24 @@
 </template>
 
 <script setup>
-import axios from 'axios';
-import { onMounted, ref, onUnmounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { useWeatherStore } from '@/stores/weatherStore';
+import router from '@/router';
 
 const route = useRoute();
-const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
-
-const weather = ref(null);
-const errorMessage = ref('');
-const dateTime = ref('');
-const forecast = ref([]);
-
-const fetchWeather = async () => {
-  try {
-    const cityName = route.params.city;
-    const country = route.params.state;
-
-    const geoRes = await axios.get(`https://api.openweathermap.org/geo/1.0/direct`, {
-      params: {
-        q: `${cityName},${country}`,
-        limit: 1,
-        appid: apiKey,
-      },
-    });
-
-    if (!geoRes.data.length) {
-      errorMessage.value = 'Şehir bulunamadı!';
-      return;
-    }
-
-    const city = geoRes.data[0];
-
-    const weatherRes = await axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
-      params: {
-        lat: city.lat,
-        lon: city.lon,
-        appid: apiKey,
-        lang: 'tr',
-        units: 'metric',
-      },
-    });
-
-    weather.value = {
-      city: city.name,
-      country: city.country,
-      temp: weatherRes.data.main.temp,
-      description: weatherRes.data.weather[0].description,
-      icon: weatherRes.data.weather[0].icon.slice(0, 2) + 'd',
-    };
-
-    // 5 günlük / 3 saatlik tahmin
-    const forecastRes = await axios.get('https://api.openweathermap.org/data/2.5/forecast', {
-      params: {
-        lat: city.lat,
-        lon: city.lon,
-        appid: apiKey,
-        lang: 'tr',
-        units: 'metric',
-      },
-    });
-
-    const dailyData = {};
-
-    forecastRes.data.list.forEach((item) => {
-      const date = new Date(item.dt * 1000);
-      const dayKey = date.toISOString().split('T')[0]; // yyyy-mm-dd
-
-      if (!dailyData[dayKey]) {
-        dailyData[dayKey] = {
-          min: item.main.temp_min,
-          max: item.main.temp_max,
-          icon: item.weather[0].icon.slice(0, 2) + 'd',
-          description: item.weather[0].description,
-          count: 1,
-        };
-      } else {
-        dailyData[dayKey].min = Math.min(dailyData[dayKey].min, item.main.temp_min);
-        dailyData[dayKey].max = Math.max(dailyData[dayKey].max, item.main.temp_max);
-        dailyData[dayKey].count++;
-      }
-    });
-
-    forecast.value = Object.entries(dailyData)
-      .slice(0, 5)
-      .map(([dateStr, data]) => ({
-        date: new Date(dateStr),
-        min: data.min,
-        max: data.max,
-        icon: data.icon,
-        description: data.description,
-      }));
-  } catch (err) {
-    console.error(err);
-    errorMessage.value = 'Hava durumu bilgisi alınamadı!';
-  }
-};
-
-const updateDateTime = () => {
-  const now = new Date();
-  dateTime.value = now.toLocaleDateString('tr-TR', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-  });
-};
+const store = useWeatherStore();
 
 onMounted(() => {
-  fetchWeather();
-
-  updateDateTime();
-  const timer = setInterval(updateDateTime, 1000);
-  onUnmounted(() => clearInterval(timer));
+  store.fetchWeatherByCity(route.params.city, route.params.country);
+  store.startDateTimeUpdater();
 });
+
+onUnmounted(() => {
+  store.stopDateTimeUpdater();
+});
+
+const goBack = () => {
+  router.back();
+};
 </script>
