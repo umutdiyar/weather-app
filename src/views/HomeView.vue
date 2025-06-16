@@ -19,6 +19,7 @@
 
       <!--❗ Hata Mesajı -->
       <p v-if="errorMessage" class="mt-2 text-sm text-red-600">{{ errorMessage }}</p>
+
       <ul v-if="suggestions.length && !errorMessage" class="mt-2 rounded-xl">
         <li
           v-for="(city, index) in suggestions"
@@ -49,11 +50,17 @@
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+
 const search = ref('');
 const suggestions = ref([]);
 const weather = ref(null);
 const errorMessage = ref('');
+
 const getCitySuggestions = async () => {
   if (search.value.length < 2) {
     suggestions.value = [];
@@ -80,31 +87,49 @@ const getCitySuggestions = async () => {
     console.log('Şehir arama hatası: ', error);
   }
 };
+
 const selectCity = async (city) => {
   search.value = `${city.name}, ${city.country}`;
   suggestions.value = [];
   errorMessage.value = '';
+
   try {
-    const { data } = await axios.get(`https://api.openweathermap.org/data/3.0/onecall`, {
+    const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
       params: {
         lat: city.lat,
         lon: city.lon,
         appid: apiKey,
         lang: 'tr',
         units: 'metric',
-        exclude: 'minutely,hourly,alerts',
       },
     });
+
+    if (!data.main || !data.weather || !data.weather.length) {
+      console.error('Beklenmeyen API yanıtı:', data);
+      errorMessage.value = 'Beklenmeyen API yanıtı alındı!';
+      return;
+    }
+
     weather.value = {
       city: city.name,
       country: city.country,
-      temp: data.current.temp,
-      description: data.current.weather[0].description,
-      icon: data.current.weather[0].icon,
+      temp: data.main.temp,
+      description: data.weather[0].description,
+      icon: data.weather[0].icon,
     };
+
+    await router.push({
+      name: 'cityView',
+      params: {
+        state: city.country,
+        city: city.name,
+      },
+    });
   } catch (error) {
     console.error('Hava durumu hatası:', error);
     errorMessage.value = 'Hava durumu bilgisi alınamadı!';
   }
 };
+
+console.log(apiKey);
 </script>

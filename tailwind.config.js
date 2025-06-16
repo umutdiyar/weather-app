@@ -4,11 +4,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        'weather-primary': '#141318',
-        'weather-primary-hover': '#282C35',
-        'weather-secondary': '#CAF205',
+        'weather-primary': '#042940',
+        'weather-primary-hover': '#005C53',
+        'weather-secondary': '#9FC131',
         'weather-background-off-white': '#ECEFF3',
-        'weather-app-to-secondary': '#755CFF',
+        'weather-app-to-secondary': '#D6D58E',
       },
     },
   },

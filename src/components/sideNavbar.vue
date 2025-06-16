@@ -29,23 +29,13 @@
           etmenizi sağlar.
         </p>
         <h2 class="text-2xl">Nasıl Çalışır:</h2>
-        <ol class="list-decimal list-inside mb-4">
+        <ol class="list-decimal list-inside">
           <li>Şehrinizin adını arama çubuğuna girerek arayın.</li>
           <li>
             Sonuçlar içerisinden bir şehir seçin, bu sizi seçtiğiniz şehrin güncel hava durumuna
             götürecektir.
           </li>
-          <li>
-            Sağ üstteki "+" simgesine tıklayarak şehri takip edin. Bu, şehri daha sonra ana sayfada
-            görüntülemek üzere kaydedecektir.
-          </li>
         </ol>
-
-        <h2 class="text-2xl">Bir şehri kaldırmak</h2>
-        <p>
-          Artık bir şehri takip etmek istemiyorsanız, ana sayfadan şehri seçmeniz yeterlidir.
-          Sayfanın alt kısmında şehri silmek için bir seçenek olacaktır.
-        </p>
       </div>
     </BaseModal>
   </div>
