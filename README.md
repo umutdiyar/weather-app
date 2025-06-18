@@ -4,7 +4,7 @@ A simple and modern weather application where users can check the current weathe
 
 ## 🚀 Live Demo
 
-You can try the app here: [https://your-demo-url.com](https://your-demo-url.com)
+You can try the app here: [Live Demo](https://weather-app-umutdiyar.vercel.app/)
 
 ## 📸 Screenshots
 
