@@ -1,5 +1,5 @@
 <template>
-  <main class="container text-white mx-auto max-w-screen-lg">
+  <main class="container text-white mx-auto max-w-screen-lg px-4">
     <div class="pt-8 mb-8 relative">
       <!-- Arama kutusu -->
       <div class="relative z-0 w-full mb-5 group">

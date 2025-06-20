@@ -1,5 +1,5 @@
 <template>
-  <header class="fixed top-0 left-0 right-0 bg-weather-primary shadow-2xl">
+  <header class="fixed top-0 left-0 right-0 px-4 bg-weather-primary shadow-2xl">
     <nav class="flex justify-center items-center text-white py-6">
       <div class="flex justify-between items-center w-full max-w-screen-lg">
         <RouterLink :to="{ name: 'home' }">
@@ -14,7 +14,7 @@
             @click="toggleModal"
             class="fa-solid fa-circle-info hover:text-weather-secondary duration-150 cursor-pointer"
           ></i>
-          <i class="fa-solid fa-plus hover:text-weather-secondary duration-150 cursor-pointer"></i>
+          <!-- <i class="fa-solid fa-plus hover:text-weather-secondary duration-150 cursor-pointer"></i> -->
         </div>
       </div>
     </nav>

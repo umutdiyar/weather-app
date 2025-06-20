@@ -4,11 +4,11 @@
       {{ store.errorMessage }}
     </div>
 
-    <div v-else-if="store.weather" class="mt-6 p-6 rounded-xl text-center">
+    <div v-else-if="store.weather" class="mt-6 p-6 mb-4 rounded-xl text-center">
       <button
         @click="goBack"
         type="button"
-        class="px-3 py-2 mb-2 text-sm font-medium text-center inline-flex items-center border-weather-secondary border text-weather-secondary hover:bg-weather-primary-hover hover:border-weather-primary-hover hover:text-white rounded-lg"
+        class="px-3 py-2 mb-8 text-sm font-medium text-center inline-flex items-center border-weather-secondary border text-weather-secondary hover:bg-weather-primary-hover hover:border-weather-primary-hover hover:text-white rounded-lg"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -44,16 +44,17 @@
 
     <div
       v-if="store.forecast.length"
-      class="mt-6 overflow-x-auto scrollbar-hide flex items-center justify-center py-2"
+      class="mt-6 sm:overflow-x-visible overflow-x-auto scrollbar-hide py-2 px-4 sm:px-0"
+      style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch"
     >
-      <div class="flex space-x-4 px-2">
+      <div class="flex space-x-4 w-max mx-auto">
         <div
           v-for="(day, index) in store.forecast"
           :key="index"
           style="background-color: #042940; box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.1)"
-          class="min-w-[160px] hover:bg-weather-primary-hover cursor-pointer bg-opacity-20 backdrop-blur-md rounded-lg p-6 flex flex-col items-center flex-shrink-0"
+          class="w-40 sm:w-48 md:w-56 flex-shrink-0 hover:bg-weather-primary-hover cursor-pointer bg-opacity-20 backdrop-blur-md rounded-lg p-4 flex flex-col items-center scroll-snap-align-start"
         >
-          <p class="font-semibold mb-2 text-white">
+          <p class="font-semibold mb-2 text-white text-sm sm:text-base">
             {{
               day.date.toLocaleDateString('tr-TR', {
                 weekday: 'short',
@@ -67,7 +68,7 @@
             :alt="day.description"
             class="w-16 h-16 mb-2"
           />
-          <p class="capitalize text-sm mb-1 text-white">{{ day.description }}</p>
+          <p class="capitalize text-xs sm:text-sm mb-1 text-white">{{ day.description }}</p>
           <p class="text-sm text-white">
             <span class="font-bold text-red-500">{{ Math.round(day.max) }}°C</span> /
             <span class="font-light text-blue-300">{{ Math.round(day.min) }}°C</span>
